@@ -35,7 +35,7 @@ resource "azurerm_subnet" "my_subnet" {
 
 
 # 5. Creamos la "Puerta" de red (Tarjeta de Interfaz de Red - NIC)
-resource "azurerm_network_interface" "mi_nic" {
+resource "azurerm_network_interface" "my_nic" {
   name                = "MyNIC_CR460"
   location            = azurerm_resource_group.my_group.location
   resource_group_name = azurerm_resource_group.my_group.name
@@ -55,7 +55,7 @@ resource "azurerm_linux_virtual_machine" "my_vm" {
   size                = "Standard_DS1_v2"  # por ejemplo, en lugar de Standard_B1s
   admin_username      = "adminuser"
   network_interface_ids = [
-    azurerm_network_interface.mi_nic.id,
+    azurerm_network_interface.my_nic.id,
   ]
 
   admin_password                  = "Admin*123!"

@@ -36,13 +36,13 @@ resource "azurerm_subnet" "my_subnet" {
 
 # 5. Creamos la "Puerta" de red (Tarjeta de Interfaz de Red - NIC)
 resource "azurerm_network_interface" "mi_nic" {
-  name                = "Virtual-NIC_CR460"
-  location            = azurerm_resource_group.mi_grupo.location
-  resource_group_name = azurerm_resource_group.mi_grupo.name
+  name                = "MyNIC_CR460"
+  location            = azurerm_resource_group.my_group.location
+  resource_group_name = azurerm_resource_group.my_group.name
 
   ip_configuration {
-    name                          = "config_interna"
-    subnet_id                     = azurerm_subnet.mi_subred.id
+    name                          = "internal"
+    subnet_id                     = azurerm_subnet.my_subnet.id
     private_ip_address_allocation = "Dynamic"
   }
 }

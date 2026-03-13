@@ -14,7 +14,7 @@ provider "azurerm" {
 # 2. Grupo de Recursos
 resource "azurerm_resource_group" "my_group" {
   name     = "MyResourceGroup_CR460"
-  location = "canadacentral"
+  location = "eastus"
 }
 
 # 3. Red Virtual

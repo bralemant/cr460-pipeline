@@ -14,7 +14,7 @@ provider "azurerm" {
 # 2. Grupo de Recursos
 resource "azurerm_resource_group" "my_group" {
   name     = "MyResourceGroup_CR460"
-  location = "eastus"
+  location = "eastus2"
 }
 
 # 3. Red Virtual
@@ -52,7 +52,7 @@ resource "azurerm_linux_virtual_machine" "my_vm" {
   name                = "MyServer-CR460"
   resource_group_name = azurerm_resource_group.my_group.name
   location            = azurerm_resource_group.my_group.location
-  size                = "Standard_B2s"
+  size                = "Standard_B1ms"
   admin_username      = "adminuser"
   network_interface_ids = [
     azurerm_network_interface.my_nic.id,

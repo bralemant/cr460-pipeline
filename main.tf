@@ -48,27 +48,24 @@ resource "azurerm_network_interface" "mi_nic" {
 }
 
 # 6. Construimos la "Casa" (La Máquina Virtual de Linux)
-resource "azurerm_linux_virtual_machine" "mi_vm" {
+resource "azurerm_linux_virtual_machine" "my_vm" {
   name                = "MyServer-CR460"
   resource_group_name = azurerm_resource_group.my_group.name
   location            = azurerm_resource_group.my_group.location
-  size                = "Standard_B1s" # Un tamaño de computadora pequeño y económico
+  size                = "Standard_B2s"  # por ejemplo, en lugar de Standard_B1s
   admin_username      = "adminuser"
   network_interface_ids = [
-    azurerm_network_interface.mi_nic.id, # Aquí le conectamos la "puerta" que creamos arriba
+    azurerm_network_interface.mi_nic.id,
   ]
 
-  # IMPORTANTE: Definimos la contraseña de acceso.
   admin_password                  = "Admin*123!"
   disable_password_authentication = false
 
-  # Configuramos el "Disco Duro" de la computadora
   os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
 
-  # Le decimos que instale Linux Ubuntu
   source_image_reference {
     publisher = "Canonical"
     offer     = "UbuntuServer"

@@ -41,7 +41,7 @@ resource "azurerm_linux_virtual_machine" "my_vm" {
   name                = "MyServer-CR460"
   resource_group_name = azurerm_resource_group.my_group.name
   location            = azurerm_resource_group.my_group.location
-  size                = "Standard_B1ms"
+  size                = "Standard_D2s_v3"
   admin_username      = "adminuser"
 
   network_interface_ids = [

@@ -63,3 +63,35 @@ resource "azurerm_linux_virtual_machine" "my_vm" {
     version   = "latest"
   }
 }
+
+# 7. Desplegando un Contenedor Docker en Azure (Azure Container Instances)
+resource "azurerm_container_group" "mi_contenedor_docker" {
+  name                = "MyContainerDocker-CR460"
+  location            = azurerm_resource_group.my_group.location
+  resource_group_name = azurerm_resource_group.my_group.name
+  ip_address_type     = "Public"
+  dns_name_label      = "myhome-cr460-antonio"
+  os_type             = "Linux"
+
+  container {
+    name   = "server-web-nginx"
+    image  = "nginx:latest"
+    cpu    = 0.5
+    memory = 1.5
+
+    ports {
+      port     = 80
+      protocol = "TCP"
+    }
+  }
+
+  exposed_port {
+    port     = 80
+    protocol = "TCP"
+  }
+
+  tags = {
+    environment = "lab"
+    project     = "CR460"
+  }
+}

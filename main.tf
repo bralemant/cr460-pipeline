@@ -50,8 +50,8 @@ resource "azurerm_network_interface" "mi_nic" {
 # 6. Construimos la "Casa" (La Máquina Virtual de Linux)
 resource "azurerm_linux_virtual_machine" "mi_vm" {
   name                = "MyServer-CR460"
-  resource_group_name = azurerm_resource_group.mi_grupo.name
-  location            = azurerm_resource_group.mi_grupo.location
+  resource_group_name = azurerm_resource_group.my_group.name
+  location            = azurerm_resource_group.my_group.location
   size                = "Standard_B1s" # Un tamaño de computadora pequeño y económico
   admin_username      = "adminuser"
   network_interface_ids = [
@@ -59,7 +59,7 @@ resource "azurerm_linux_virtual_machine" "mi_vm" {
   ]
 
   # IMPORTANTE: Definimos la contraseña de acceso.
-  admin_password                  = "Admin*123!" 
+  admin_password                  = "Admin*123!"
   disable_password_authentication = false
 
   # Configuramos el "Disco Duro" de la computadora
@@ -76,3 +76,4 @@ resource "azurerm_linux_virtual_machine" "mi_vm" {
     version   = "latest"
   }
 }
+

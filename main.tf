@@ -11,26 +11,25 @@ provider "azurerm" {
   features {}
 }
 
-# 2. Le damos las instrucciones para crear la "Caja" o Grupo de Recursos
+# 2. Grupo de Recursos
 resource "azurerm_resource_group" "my_group" {
   name     = "MyResourceGroup_CR460"
   location = "canadacentral"
 }
 
-
-# 3. Creamos las "Tuberías" (Red Virtual)
-resource "azurerm_virtual_network" "mi_red" {
+# 3. Red Virtual
+resource "azurerm_virtual_network" "my_network" {
   name                = "MyVirtualNetwork_CR460"
   address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.mi_grupo.location
-  resource_group_name = azurerm_resource_group.mi_grupo.name
+  location            = azurerm_resource_group.my_group.location
+  resource_group_name = azurerm_resource_group.my_group.name
 }
 
-# 4. Creamos una "Habitación" en la red (Subred)
+# 4. Subred
 resource "azurerm_subnet" "my_subnet" {
   name                 = "MySubNet_CR460"
-  resource_group_name  = azurerm_resource_group.mi_grupo.name
-  virtual_network_name = azurerm_virtual_network.mi_red.name
+  resource_group_name  = azurerm_resource_group.my_group.name
+  virtual_network_name = azurerm_virtual_network.my_network.name
   address_prefixes     = ["10.0.1.0/24"]
 }
 

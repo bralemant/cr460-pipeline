@@ -1,23 +1,12 @@
-variable "ARM_CLIENT_SECRET" {
-  type = string
-}
-
-variable "ARM_SUBSCRIPTION_ID" {
-  type = string
-}
-
-# 1. Le decimos a Terraform que use Microsoft Azure
 provider "azurerm" {
   features {}
 }
 
-# 2. Grupo de Recursos
 resource "azurerm_resource_group" "my_group" {
   name     = "MyResourceGroup_CR460"
   location = "eastus2"
 }
 
-# 3. Red Virtual
 resource "azurerm_virtual_network" "my_network" {
   name                = "MyVirtualNetwork_CR460"
   address_space       = ["10.0.0.0/16"]
@@ -25,7 +14,6 @@ resource "azurerm_virtual_network" "my_network" {
   resource_group_name = azurerm_resource_group.my_group.name
 }
 
-# 4. Subred
 resource "azurerm_subnet" "my_subnet" {
   name                 = "MySubNet_CR460"
   resource_group_name  = azurerm_resource_group.my_group.name
@@ -33,8 +21,6 @@ resource "azurerm_subnet" "my_subnet" {
   address_prefixes     = ["10.0.1.0/24"]
 }
 
-
-# 5. Creamos la "Puerta" de red (Tarjeta de Interfaz de Red - NIC)
 resource "azurerm_network_interface" "my_nic" {
   name                = "MyNIC_CR460"
   location            = azurerm_resource_group.my_group.location
@@ -45,21 +31,29 @@ resource "azurerm_network_interface" "my_nic" {
     subnet_id                     = azurerm_subnet.my_subnet.id
     private_ip_address_allocation = "Dynamic"
   }
+
+  depends_on = [
+    azurerm_subnet.my_subnet
+  ]
 }
 
-# 6. Construimos la "Casa" (La Máquina Virtual de Linux)
 resource "azurerm_linux_virtual_machine" "my_vm" {
   name                = "MyServer-CR460"
   resource_group_name = azurerm_resource_group.my_group.name
   location            = azurerm_resource_group.my_group.location
   size                = "Standard_B1ms"
   admin_username      = "adminuser"
+
   network_interface_ids = [
-    azurerm_network_interface.my_nic.id,
+    azurerm_network_interface.my_nic.id
   ]
 
-  admin_password                  = "Admin*123!"
-  disable_password_authentication = false
+  disable_password_authentication = true
+
+  admin_ssh_key {
+    username   = "adminuser"
+    public_key = file("~/.ssh/id_rsa.pub")
+  }
 
   os_disk {
     caching              = "ReadWrite"
@@ -73,4 +67,3 @@ resource "azurerm_linux_virtual_machine" "my_vm" {
     version   = "latest"
   }
 }
-

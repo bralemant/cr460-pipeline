@@ -1,3 +1,11 @@
+variable "ARM_CLIENT_SECRET" {
+  type = string
+}
+
+variable "ARM_SUBSCRIPTION_ID" {
+  type = string
+}
+
 # 1. Le decimos a Terraform que use Microsoft Azure
 provider "azurerm" {
   features {}
